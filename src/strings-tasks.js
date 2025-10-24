@@ -37,24 +37,11 @@ function getStringLength(a) {
  *   isString(null) => false
  *   isString([]) => false
  *   isString({}) => false
- *   isString('test') => true
+ *   isString('test') => truev
  *   isString(new String('test')) => true
  */
-function isString(string) {
-  if (
-    string === null &&
-    string === [] &&
-    string === {} &&
-    string === undefined &&
-    string === '' &&
-    string === 'test'
-  ) {
-    return false;
-  }
-  if (typeof string === 'string') {
-    return true;
-  }
-  return true;
+function isString(/* string */) {
+  throw new Error('Not implemented');
 }
 
 /**
@@ -69,9 +56,8 @@ function isString(string) {
  *   concatenateStrings('aa', '') => 'aa'.
  *   concatenateStrings('', 'bb') => 'bb'
  */
-function concatenateStrings(a, b) {
-  const c = `${a}${b}`;
-  return c;
+function concatenateStrings(/* value1, value2 */) {
+  throw new Error('Not implemented');
 }
 
 /**
@@ -171,9 +157,8 @@ function repeatString(str, times) {
  *   removeFirstOccurrences('I like legends', 'end') => 'I like legs'.
  *   removeFirstOccurrences('ABABAB', 'BA') => 'ABAB'.
  */
-function removeFirstOccurrences(str, value) {
-  const a = str.replace(value, '');
-  return a;
+function removeFirstOccurrences(/* str, value */) {
+  throw new Error('Not implemented');
 }
 
 /**
@@ -208,7 +193,9 @@ function removeLastOccurrences(str, value) {
  *   sumOfCodes('') => 0
  *   sumOfCodes() => 0
  */
-function sumOfCodes() {}
+function sumOfCodes(/* str */) {
+  throw new Error('Not implemented');
+}
 
 /**
  * Checks if a string starts with a specific substring.
@@ -242,28 +229,19 @@ function endsWith(str, substr) {
 
 /**
  * Returns a time string in the "mm:ss" format.
- * 
+ *
  * @param {number} minutes - The number of minutes (non-negative integer).
  * @param {number} seconds - The number of seconds (non-negative integer).
  * @return {string} - The time string in the "mm:ss" format.
- * 
+ *
  * @example
  *   formatTime(5, 30) => "05:30"
  *   formatTime(1, 15) => "01:15"
  *   formatTime(0, 45) => "00:45"
  *   formatTime(0, 0) => "00:00"
  */
-function formatTime(minutes, seconds) {
-  const minutesString = minutes.getMinutes();
-  const secondsString = seconds.getSeconds();
-  if (minutesString < 10) {
-    minutesString = '0' + minutesString;
-  }
-  if (secondsString < 10) {
-    secondsString = '0' + secondsString;
-  }
-  const timeString = `${minutesString}:${secondsString}`;
-  return timeString;
+function formatTime(/* minutes, seconds */) {
+  throw new Error('Not implemented');
 }
 
 /**
@@ -349,8 +327,10 @@ function countVowels(str) {
  *   isPalindrome('apple') => false
  *   isPalindrome('No lemon, no melon') => true
  */
-function isPalindrome(/* str */) {
-  throw new Error('Not implemented');
+function isPalindrome(str) {
+  const cleanStr = str.toLowerCase().replace(/[^a-zа-я0-9]/g, '');
+  const reversedStr = cleanStr.split('').reverse().join('');
+  return cleanStr === reversedStr;
 }
 
 /**
@@ -379,8 +359,12 @@ function findLongestWord(/* sentence */) {
  *   reverseWords('Hello World') => 'olleH dlroW'
  *   reverseWords('The Quick Brown Fox') => 'ehT kciuQ nworB xoF'
  */
-function reverseWords(/* str */) {
-  throw new Error('Not implemented');
+function reverseWords(str) {
+  const words = str.split(' ');
+  const reversedWords = words.map((word) => {
+    return word.split('').reverse().join('');
+  });
+  return reversedWords.join(' ');
 }
 
 /**
@@ -394,8 +378,16 @@ function reverseWords(/* str */) {
  *   invertCase('JavaScript is Fun') => 'jAVAsCRIPT IS fUN'
  *   invertCase('12345') => '12345'
  */
-function invertCase(/* str */) {
-  throw new Error('Not implemented');
+function invertCase(str) {
+  let invertedString = '';
+  for (let i = 0; i < str.length; i += 1) {
+    if (str[i] === str[i].toUpperCase()) {
+      invertedString += str[i].toLowerCase();
+    } else {
+      invertedString += str[i].toUpperCase();
+    }
+  }
+  return invertedString;
 }
 
 /**
@@ -425,8 +417,9 @@ function getStringFromTemplate(firstName, lastName) {
  *   extractNameFromTemplate('Hello, John Doe!') => 'John Doe'
  *   extractNameFromTemplate('Hello, Chuck Norris!') => 'Chuck Norris'
  */
-function extractNameFromTemplate(/* value */) {
-  throw new Error('Not implemented');
+function extractNameFromTemplate(value) {
+  const name = value.slice(7, -1);
+  return name;
 }
 
 /**
@@ -440,8 +433,9 @@ function extractNameFromTemplate(/* value */) {
  *   unbracketTag('<span>') => 'span'
  *   unbracketTag('<a>') => 'a'
  */
-function unbracketTag(/* str */) {
-  throw new Error('Not implemented');
+function unbracketTag(str) {
+  const a = str.slice(1, -1);
+  return a;
 }
 
 /**
@@ -459,8 +453,10 @@ function unbracketTag(/* str */) {
  *   ],
  *   'info@gmail.com' => ['info@gmail.com']
  */
-function extractEmails(/* str */) {
-  throw new Error('Not implemented');
+function extractEmails(str) {
+  const emails = str.split(';');
+  const validEmails = emails.map((email) => email.trim());
+  return validEmails;
 }
 
 /**
@@ -509,7 +505,21 @@ function encodeToRot13(/* str */) {
  */
 function getCardId(value) {
   const suits = ['♣', '♦', '♥', '♠'];
-  const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+  const ranks = [
+    'A',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    'J',
+    'Q',
+    'K',
+  ];
   const suit = value.slice(-1);
   const rank = value.slice(0, -1);
   const suitIndex = suits.indexOf(suit);
